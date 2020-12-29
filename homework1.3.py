@@ -6,4 +6,4 @@ n = int(input('Введите любое целое число: '))
 result = n + int(f'{n}{n}') + int(f'{n}{n}{n}')
 
 print(f'Составим выражение: {n} + {n}{n} + {n}{n}{n} и выведем его результат:')
-print(result)
+print(result) #печать результата

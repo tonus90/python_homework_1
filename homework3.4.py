@@ -5,30 +5,11 @@
 # Подсказка: попробуйте решить задачу двумя способами. Первый — возведение в степень с помощью оператора **.
 # Второй — более сложная реализация без оператора **, предусматривающая использование цикла.
 
-#проверка степени на отрицательное число
-def check_num_st(y):
-    while True:
-        if y<=0:
-            return y
-            break
-        else:
-            y=int(input('введи целое отрицательное число: '))
-
-#проверка основания на положительное число
-def check_num_base(x):
-    while True:
-        if x>0:
-            return x
-            break
-        else:
-            x=int(input('введи положительно число: '))
-
-
-def my_func1(x, y):
+def my_func1(x, y): #функция для возведения в степень основания (**)
     result=x**(y)
     return result
 
-def my_func2(x, y):
+def my_func2(x, y): #функция для возведения в степень без **
     list_x=[]
     for n in range(-(y)-1):
         list_x.append(x)
@@ -38,10 +19,10 @@ def my_func2(x, y):
     return result
 
 base=float(input('введите положительное основание для возведения в степень: '))
-check_num_base(base)
+
 st=int(input('введите отрицательную целую степень: '))
-check_num_st(st)
 
-print(my_func1(base, st))
 
-print(my_func2(base, st))
+print(my_func1(base, st)) #вывод на экран, используем 1-ю ф-ю
+
+print(my_func2(base, st)) #вывод на экран, используем 2-ю ф-ю

@@ -2,6 +2,6 @@
 # Необходимо решить задание в одну строку.
 # Подсказка: использовать функцию range() и генератор.
 
-generator_evil=[el for el in range(20, 240, 1) if el%20==0 or el%21==0]
+generator_evil=[el for el in range(20, 241, 1) if el%20==0 or el%21==0]
 
 print(generator_evil)

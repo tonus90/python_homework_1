@@ -1,4 +1,4 @@
-one-один
-two-два
-three-три
-four-четыре
+one-odin
+two-dva
+three-tri
+four-4etyre

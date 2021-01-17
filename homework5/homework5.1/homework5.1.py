@@ -2,9 +2,9 @@
 # Об окончании ввода данных свидетельствует пустая строка.
 # file = open('file.txt', )
 
-with open('file.txt', 'w') as file:
+with open('file.txt', 'w') as file: #менеджер контекста использую во всей ДЗ
     while True:
-        insert = input('Введи данные в файл: ')
-        if insert == 'q':
+        insert = input('Введи данные в файл: ') #водим данные пока ТРУ  переменную инсерт
+        if insert == 'q': #если спецсимвол, то выход
             break
-        text = file.write(f'{insert}\n')
+        text = file.write(f'{insert}\n') #записываем переменную инсерт в текст построчно

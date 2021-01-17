@@ -15,19 +15,19 @@ import json
 
 avg_profit_dict={}
 with open('file.txt', 'r') as file:
-    str_list = file.readlines()
+    str_list = file.readlines() #читаем файл и в лист его
     firms_profit = {}
     profit_list = []
     for i in str_list:
-        firm_list = i.split()
-        if int(firm_list[2]) > int(firm_list[3]):
-            profit = int(firm_list[2]) - int(firm_list[3])
-            firms_profit[firm_list[0]] = profit
-            profit_list.append(profit)
-    avg_profit = sum(profit_list)/len(profit_list)
+        firm_list = i.split() #каждую фирму сплитуем по пробелу
+        profit = int(firm_list[2]) - int(firm_list[3]) #считаем прибыль
+        if profit > 0: #если больше нуля
+            firms_profit[firm_list[0]] = profit #записываем название фирмы и ее прибыль в слвоарь
+            profit_list.append(profit) #добавим прибыль прибыльной фирмы в лист
+    avg_profit = sum(profit_list)/len(profit_list) #посчитаем среднюю прибыль прибыльных компаний
 
-    avg_profit_dict['average_profit'] = int(avg_profit)
-    my_list = [firms_profit, avg_profit_dict]
+    avg_profit_dict['average_profit'] = int(avg_profit) #запишем в словарик
+    my_list = [firms_profit, avg_profit_dict] #два ранее записаных словаря в лист
 
-with open('my_json.json', 'w') as my_json:
+with open('my_json.json', 'w') as my_json: #и в json как по заданию
     json.dump(my_list, my_json)

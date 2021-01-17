@@ -53,23 +53,3 @@ for el in copier:
         print(el)
         break
     print(el)
-
-
-
-
-
-
-# t = (x for x in range(2)) #генератор такая штука которая работает 1 раз
-# print(t)
-# print(next(t))
-# print(next(t))
-#
-#
-# def gen_f():
-#     yield 0
-#     yield 1
-#     yield 2
-#
-# f = gen_f()
-# print(f)
-# print(next(f))

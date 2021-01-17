@@ -2,13 +2,13 @@
 # Определить, кто из сотрудников имеет оклад менее 20 тыс.,
 # вывести фамилии этих сотрудников. Выполнить подсчет средней величины дохода сотрудников.
 
-salaries = []
+salaries = [] #лист для зарплат
 with open('file.txt', 'r') as file:
-    workers_list = file.readlines()
-    for i in range(len(workers_list)-1):
-        salary_list = workers_list[i].split()
-        if int(salary_list[1]) < 20000:
-            print(f'{salary_list[0]} имеет ЗП меньше 20.000руб')
-        salaries.append(int(salary_list[1]))
-    avg_salary = sum(salaries)/len(workers_list)
-    print(f'средняя зарплата: {int(avg_salary)}')
+    workers_list = file.readlines() #засунуть документ в лист
+    for i in range(len(workers_list)): #по каждому работнику
+        salary_list = workers_list[i].split() #разбиваем строку работника и в лист ее
+        if int(salary_list[1]) < 20000: #если зп сотрудника меньше 20000
+            print(f'{salary_list[0]} имеет ЗП меньше 20.000руб') #печатаем имя бедного человека и информацию об этом
+        salaries.append(int(salary_list[1])) #зарплату каждого работника в лист засовываем
+    avg_salary = sum(salaries)/len(workers_list) #читаем среднюю зп
+    print(f'средняя зарплата: {int(avg_salary)}') #печатаем ее

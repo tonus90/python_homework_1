@@ -9,6 +9,7 @@
 #
 # Пример словаря:
 # {“Информатика”: 170, “Физика”: 40, “Физкультура”: 30}
+import json
 result = []
 my_dict = {}
 with open('file.txt', 'r') as file:
@@ -26,3 +27,6 @@ with open('file.txt', 'r') as file:
         result.clear()
 
 print(f'\nОбработали текстовый файл, получили словарь: {my_dict}')
+
+with open('my_json.json', 'w') as my_json:
+    json.dump(my_dict, my_json)

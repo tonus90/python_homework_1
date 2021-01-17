@@ -31,4 +31,3 @@ with open('file.txt', 'r') as file:
 
 with open('my_json.json', 'w') as my_json:
     json.dump(my_list, my_json)
-    a=3

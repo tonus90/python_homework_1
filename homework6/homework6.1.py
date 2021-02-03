@@ -18,5 +18,4 @@ try:
 except Exception as err:
     print(err)
 print(plane3.current_free_places)
-
-c=1
+print(plane3.temp)

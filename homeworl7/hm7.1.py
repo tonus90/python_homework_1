@@ -13,30 +13,30 @@ class Matrix:
     def __init__(self, matrix):
         self.matrix = matrix
 
-    def __str__(self):
-        return self.str_return()
+    def str_return(self): #метода для красивого вывода матрицы на принте
+        list_data = [] #нужен будет лист
+        for i in self.matrix: #вытаскиваем поэлементно строки матрицы, каждое число матрицы в int
+            new_list = [str(el) for el in i] #стрингуем каждое число вытащенной строки матрицы и засовываем в лист
+            res1 = ' '.join(new_list) #из стринговых чисел листа делаем строку с числами (Пр.1 2 3)
+            list_data.append(res1) # кладем готовую строку в list_data
+        res2 = '\n'.join(list_data) #джоиним каждую строку из лист дата через  \n для красивого отображения матрицы
+        return res2 #возвращаем из метода
 
-    def str_return(self):
-        list_data = []
-        for i in self.matrix:
-            new_list = [str(el) for el in i]
-            res1 = ' '.join(new_list)
-            list_data.append(res1)
-        res2 = '\n'.join(list_data)
-        return res2
+    def __str__(self):
+        return self.str_return() #чтобы не вызывать явно метод str_return вызываем через print
 
     def __add__(self, other):
         result = []
         num = []
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[0])):
-                summ = self.matrix[i][j] + other.matrix[i][j]
-                num.append(summ)
-                if len(num) == len(self.matrix):
-                    result.append(num)
-                    num = []
-        self.matrix = result
-        return Matrix(self.matrix)
+                summ = self.matrix[i][j] + other.matrix[i][j] #вобщем тут получим цифру сложения перого объекта и второго
+                num.append(summ) #добавим это в массив чисел
+                if len(num) == len(self.matrix): #когда в массиве чисел будет столько же эл. сколько и в строке матрицы
+                    result.append(num) #добавляем в результ. список наш список чисел
+                    num = [] #обнуляем массив чисел
+        self.matrix = result #когда все циклы пройдут это у нас будет многомерный массив
+        return Matrix(self.matrix) #который мы засунем в класс
 
 
 m1 = [[1,2,3],[4,5,6],[7,8,9]]
@@ -47,9 +47,8 @@ mat1 = Matrix(m1)
 mat2 = Matrix(m2)
 mat3 = Matrix(m3)
 
-# for i in m.matrix_sum():
-#     print(i)
-print(mat1+mat2+mat3+mat2+mat2+mat1)
+print(mat1+mat2+mat3+mat2+mat2+mat1) #все считает на ура, очень крутое задание, спасибо, было не на изи. Самое
+#сложное из 3х
 
 # list_data = []
 # for j in range(0, len(matrix)):

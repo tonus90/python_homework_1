@@ -12,22 +12,8 @@
 class Matrix:
     def __init__(self, matrix):
         self.matrix = matrix
+
     def __str__(self):
-        # for j in range(0, len(self.matrix)):
-        #     for i in self.matrix:
-        #         new_list = [str(i) for i in i]
-        #         res1 = ' '.join(new_list)
-        #     a = " ".join(str(el) for el in self.matrix)
-        #     return f'{a}\n v'
-        # list_data = []
-        # for j in range(0, len(self.matrix)):
-        #     for i in self.matrix:
-        #         new_list = [str(i) for i in i]
-        #         res1 = ' '.join(new_list)
-        #         list_data.append(res1)
-        #         list_data.append('\n')
-        #     # print(list_data[j])
-        #
         return self.str_return()
 
     def str_return(self):
@@ -38,36 +24,32 @@ class Matrix:
             list_data.append(res1)
         res2 = '\n'.join(list_data)
         return res2
-    # def matrix_sum(self):
-    #     for i in self.matrix:
-    #         new_list = [el for el in i]
-    #         for j in range(len(new_list)):
-    #             a = new_list[j]
-    #             yield a
-
 
     def __add__(self, other):
-        result = [[0,0,0],[0,0,0],[0,0,0]]
+        result = []
+        num = []
         for i in range(len(self.matrix)):
-
             for j in range(len(self.matrix[0])):
-                result[i][j] = self.matrix[i][j] + other.matrix[i][j]
-        return result
+                summ = self.matrix[i][j] + other.matrix[i][j]
+                num.append(summ)
+                if len(num) == len(self.matrix):
+                    result.append(num)
+                    num = []
+        self.matrix = result
+        return Matrix(self.matrix)
 
 
+m1 = [[1, 2, 3],[4,5,6],[7,8,9]]
+m2 = [[4, 5, 6],[3,3,3],[4,4,4]]
+m3 = [[7, 8, 9],[5,5,5],[6,6,6]]
 
-
-my_list1 = [1, 2, 3]
-my_list2 = [4, 5, 6]
-my_list3 = [7, 8, 9]
-matrix = [my_list1, my_list2, my_list3]
-m = Matrix(matrix)
-# print(m)
+mat1 = Matrix(m1)
+mat2 = Matrix(m2)
+mat3 = Matrix(m3)
+print(mat1)
 # for i in m.matrix_sum():
 #     print(i)
-
-
-print(print(m+m))
+print(mat1+mat2+mat3)
 
 # list_data = []
 # for j in range(0, len(matrix)):

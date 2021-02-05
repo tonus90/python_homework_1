@@ -41,15 +41,15 @@ class Matrix:
 
 m1 = [[1, 2, 3],[4,5,6],[7,8,9]]
 m2 = [[4, 5, 6],[3,3,3],[4,4,4]]
-m3 = [[7, 8, 9],[5,5,5],[6,6,6]]
+m3 = [[7,8,9],[5,5,5],[6,6,6]]
 
 mat1 = Matrix(m1)
 mat2 = Matrix(m2)
 mat3 = Matrix(m3)
-print(mat1)
+
 # for i in m.matrix_sum():
 #     print(i)
-print(mat1+mat2+mat3)
+print(mat1+mat2+mat3+mat2+mat2+mat1)
 
 # list_data = []
 # for j in range(0, len(matrix)):

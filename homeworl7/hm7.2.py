@@ -10,7 +10,7 @@
 # классы для основных классов проекта, проверить на практике работу декоратора @property.
 
 class Cloths:
-    def __init__(self, param, name = 'Одежды'):
+    def __init__(self, param, name = 'Всей одежды'):
         self.name = name
         self.param = param
     def summ(self):
@@ -20,7 +20,7 @@ class Cloths:
         elif self.name == 'Костюма':
             summ = 2*self.param+0.3
             return round(summ, 1)
-        elif self.name == 'Одежды':
+        elif self.name == 'Всей одежды':
             summ = self.param
             return round(summ, 1)
     def __add__(self, other):
@@ -32,10 +32,14 @@ class Cloths:
 class Coat(Cloths):
     def __init__(self, param, name='Пальто'):
         super().__init__(param, name)
+    def __str__(self):
+        return f'На изготовление {self.name} уйдет {round(self.summ(), 1)}м ткани.'
 
 class Suit(Cloths):
     def __init__(self, param, name='Костюма'):
         super().__init__(param, name)
+    def __str__(self):
+        return f'На изготовление {self.name} уйдет {round(self.summ(), 1)}м ткани.'
 
 
 

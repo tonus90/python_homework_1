@@ -49,7 +49,7 @@ class Cell:
 
         return f'{a}{"*"*ost}'
 
-cell1 = Cell(16)
+cell1 = Cell(23)
 cell2 = Cell(5)
 print(cell1+cell2)
 print(cell1-cell2)

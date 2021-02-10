@@ -15,7 +15,7 @@ from abc import ABC, abstractmethod
 from time import sleep, time
 
 class OrgWarehouse():
-
+    pass
 
 class OrgTechnic(ABC):
     def __init__(self, name, price, color):
@@ -24,11 +24,11 @@ class OrgTechnic(ABC):
         self.color = color
 
     @abstractmethod
-    def __print(self, cnt_paper, time_print):
+    def print(self, cnt_paper, time_print):
         pass
 
     @abstractmethod
-    def __scan(self,  cnt_paper, time_scan):
+    def scan(self,  cnt_paper, time_scan):
         pass
 
 
@@ -40,7 +40,7 @@ class Printer(OrgTechnic):
         self.ink_system = ink_system
         self.ink_capacity = ink_capacity
 
-    def __print(self, cnt_paper, time_print):
+    def print(self, cnt_paper, time_print):
         my_list = [el for el in range(1, cnt_paper, 1)]
         time_cnter = 0
         printed_list = []
@@ -60,20 +60,41 @@ class Printer(OrgTechnic):
             self.ink_capacity -= 2
         return print(f'Напечатал {len(printed_list)} листов за {time_cnter} секунд')
 
+    def scan(self,  cnt_paper, time_scan):
+        pass
+
     def print_logic(self, lists):
-        if self.colorful == 'цветной':
-            time_c = 1.2
-        elif self.colorful == 'чб':
-            time_c = 0.5
-        if self.ink_system == 'лазер':
-            time_i = 0.2
-        elif self.ink_system == 'струйный':
-            time_i = 0.6
+        my_dict1 = {
+            'цветной': 1.2,
+            'чб': 0.6,
+        }
+        my_dict2 = {
+            'лазер': 0.5,
+            'струйный': 1
+        }
+
+        time_c = my_dict1.get(self.colorful)
+        time_i = my_dict2.get(self.ink_system)
         summ_time = time_c+time_i
-        return self.__print(lists, summ_time)
+        return self.print(lists, summ_time)
 
-printer1 = Printer('Epson', 'white', 'Цветной',  )
+    def __str__(self):
+        return f'Параметры принтера. Фирма: {self.name}, Стоимость: {self.price}р., Цвет: {self.color},\n Чернила: {self.ink_system} Запас чернил: {self.ink_capacity}, Цвет/ЧБ: {self.colorful}'
 
+
+
+printer_params = {
+    'name': 'Epson',
+    'price': 5000,
+    'color': 'white',
+    'colorful': 'цветной',
+    'ink_system': 'струйный',
+    'ink_capacity': 100
+}
+
+printer1 = Printer(**printer_params)
+printer1.print_logic(5)
+print(printer1)
 
 
 # class Scaner(OrgTechnic):

@@ -13,6 +13,7 @@
 
 from abc import ABC, abstractmethod
 from time import sleep, time
+from random import choice, random
 
 class OrgWarehouse():
     pass
@@ -82,6 +83,22 @@ class Printer(OrgTechnic):
         return f'Параметры принтера. Фирма: {self.name}, Стоимость: {self.price}р., Цвет: {self.color},\n Чернила: {self.ink_system} Запас чернил: {self.ink_capacity}, Цвет/ЧБ: {self.colorful}'
 
 
+# def generate_objects(cnt_objects):
+name = ['Sony', 'Epson', 'Cannon', 'HP', 'Kyocera', 'Xerox']
+price = int(random()*10)*1000
+color = ['white', 'black', 'blue', 'gray']
+colorful = ['цветной', 'чб']
+ink_system = ['лазер', 'струйный']
+ink_capacity = [100, 150, 200]
+scan_mode = ['цветной', 'чб']
+print_params = [name, price, color, colorful, ink_system, ink_capacity]
+name_list = ['name', 'price', 'color', 'colorful', 'ink_system', 'ink_capacity']
+printers_list = []
+p_dict = {}
+for j in range(10):
+    for i in range(len(name_list)):
+        p_dict[name_list[i]] = choice(print_params[i])
+print(p_dict)
 
 printer_params = {
     'name': 'Epson',
@@ -92,9 +109,11 @@ printer_params = {
     'ink_capacity': 100
 }
 
-printer1 = Printer(**printer_params)
-printer1.print_logic(5)
-print(printer1)
+# printer1 = Printer(**printer_params)
+# printer1.print_logic(5)
+# print(printer1)
+price = int(random()*10)*1000
+print(price)
 
 
 # class Scaner(OrgTechnic):

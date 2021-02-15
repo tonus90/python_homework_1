@@ -13,17 +13,84 @@
 
 from abc import ABC, abstractmethod
 from time import sleep, time
-from random import choice, random
+from random import choice
+import copy as c
 
 class OrgWarehouse():
-    def __init__(self, capacity, department, type_org):
+    def __init__(self, capacity):
         self.capacity = capacity
-        self.department = department
-        self.type_org = type_org
-    def get_in(self, cnt_org):
-        my_dict = {}
-        cnt_org
+        self.get_dict = {}
+        self.take_out_dict = {}
+        self.item_list1 = []
+        self.item_list2 = []
+        self.item_list3 = []
+        self.list_for_buh = []
+        self.list_for_analit = []
+        self.list_for_it = []
 
+    def for_str(self):
+        return f'Сканеров: {len(self.get_dict.get("Сканеры"))}, Принтеров: {len(self.get_dict.get("Принтеры"))} Ксероксов: ' \
+               f'{len(self.get_dict.get("Ксероксы"))}'
+
+    def get_in(self, items, cnt):
+        my_list = []
+
+        for i in range(1, cnt+1, 1):
+            my_list.append(items.pop())
+
+
+
+        if type(my_list[0]) == Printer:
+            for i in my_list:
+                self.item_list1.append(i)
+                self.capacity -= 1
+            self.get_dict['Принтеры'] = self.item_list1
+        elif type(my_list[0]) == Scaner:
+            for i in my_list:
+                self.item_list2.append(i)
+                self.capacity -= 1
+            self.get_dict['Сканеры'] = self.item_list2
+        elif type(my_list[0]) == Xerox:
+            for i in my_list:
+                self.item_list3.append(i)
+                self.capacity -= 1
+            self.get_dict['Ксероксы'] = self.item_list3
+
+
+        return self.get_dict
+
+    def __str__(self):
+        return f'На складе вот такая орг техника:\n {self.for_str()}'
+
+    def take_out(self, dep, type_of, cnt):
+        my_dict = {}
+        if dep == 'Бухгалтерия':
+            for i in range(cnt):
+                self.list_for_buh.append(self.get_dict.get(type_of).pop())
+                my_dict[type_of] = self.list_for_buh
+                self.capacity += 1
+        if dep == 'Аналитика':
+            for i in range(cnt):
+                self.list_for_analit.append(self.get_dict.get(type_of).pop())
+                my_dict[type_of] = self.list_for_analit
+                self.capacity += 1
+        if dep == 'IT':
+            for i in range(cnt):
+                self.list_for_it.append(self.get_dict.get(type_of).pop())
+                my_dict[type_of] = self.list_for_it
+                self.capacity += 1
+        self.take_out_dict[dep] = c.deepcopy(my_dict)
+
+        return self.take_out_dict
+    #Нижний метод в разработке, он должен вернуть, сколько какой техники в департаментах, отделах, но скорее всего такой метод
+    #лучше реализовать на базе классов отделов.
+    # def what_in_departments(self):
+    #     return f'В отделе Бухгалтерии такая оргтехника: \nСканеров: {len(self.take_out_dict.get("Бухгалтерия").get("Сканеры"))} ' \
+    #            f'Принтеров: {len(self.take_out_dict.get("Бухгалтерия").get("Принтеры"))} Ксероксов: {len(self.take_out_dict.get("Бухгалтерия").get("Ксероксов"))}\n' \
+    #            f'В отделе Аналитики такая оргтехника: \nСканеров: {len(self.take_out_dict.get("Аналитика").get("Сканеры"))} ' \
+    #            f'Принтеров: {len(self.take_out_dict.get("Аналитика").get("Принтеры"))} Ксероксов: {len(self.take_out_dict.get("Аналитика").get("Ксероксов"))}\n' \
+    #            f'В отделе IT такая оргтехника: \nСканеров: {len(self.take_out_dict.get("IT").get("Сканеры"))} ' \
+    #            f'Принтеров: {len(self.take_out_dict.get("IT").get("Принтеры"))} Ксероксов: {len(self.take_out_dict.get("IT").get("Ксероксов"))}\n'
 class OrgTechnic(ABC):
     def __init__(self, name, price, color):
         self.name = name
@@ -237,16 +304,45 @@ class GenObj():
         return list_obj
 
 objects_p = GenObj(6, 'p')
-print(objects_p.generate_obj())
-print(objects_p.generate_obj()[0])
-objects_p.generate_obj()[0].print_logic(10)
+printers = objects_p.generate_obj()
 
 objects_s = GenObj(5, 's')
-print(objects_s.generate_obj())
-print(objects_s.generate_obj()[0])
-objects_s.generate_obj()[0].scan_logic(4)
+scaners = objects_s.generate_obj()
+print(scaners)
 
 objects_x = GenObj(4, 'x')
-print(objects_x.generate_obj())
-print(objects_x.generate_obj()[0])
-objects_x.generate_obj()[0].logic_xerox(3)
+xeroxes = objects_x.generate_obj()
+
+warehouse1 = OrgWarehouse(30)
+print(warehouse1.get_in(scaners, 3))
+print(warehouse1.get_in(scaners, 2))
+
+print(warehouse1.get_in(printers, 5))
+
+print(warehouse1.get_in(xeroxes, 3))
+
+
+print(warehouse1)
+print(warehouse1.take_out('Бухгалтерия', 'Сканеры', 2))
+print(warehouse1.take_out('Бухгалтерия', 'Сканеры', 1))
+print(warehouse1.take_out('Аналитика', 'Сканеры', 1))
+print(warehouse1.take_out('IT', 'Сканеры', 1))
+print(warehouse1.take_out('IT', 'Принтеры', 2))
+print(warehouse1.take_out('Бухгалтерия', 'Принтеры', 1))
+print(warehouse1.take_out('Аналитика', 'Ксероксы', 1))
+print(scaners)
+print(warehouse1)
+
+#Создам еще сканер, тк все отдал на скад и со склада в отделы:
+scaners_new = GenObj(1, 's') #создал 1 объект генератора
+scaner1 = scaners_new.generate_obj()[0] #с помощью метода generate_obj сделал сканер и вытащил его с индексом 0
+
+scaner1.scan_logic(4) #сканер работает, засунул ему 4 листа для скана, можно убедиться
+
+printer1 = printers[0] #вытащил из листа принтеров 1 принтер
+printer1.print_logic(10) #аставил печатать его 10 листов
+
+xerox1 = xeroxes[0] #вытащу ксерокс
+xerox1.logic_xerox(3) #отксерю 3 листа, все работает, все круто.
+
+

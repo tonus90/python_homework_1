@@ -29,16 +29,21 @@ class OrgWarehouse():
         self.list_for_it = []
 
     def for_str(self):
-        return f'Сканеров: {len(self.get_dict.get("Сканеры"))}, Принтеров: {len(self.get_dict.get("Принтеры"))} Ксероксов: ' \
+        try:
+            a = len(type(self.get_dict.get("Принтеры")))
+        except TypeError:
+            print('Ошибка! Принтеров еще не завезли на склад')
+            a=0
+        return f'Сканеров: {len(self.get_dict.get("Сканеры"))}, Принтеров: {a} Ксероксов: ' \
                f'{len(self.get_dict.get("Ксероксы"))}'
 
     def get_in(self, items, cnt):
         my_list = []
+        if type(cnt) == str:
+            raise GetInException('Ошибка, число принтеров должно быть int, а не str')
 
         for i in range(1, cnt+1, 1):
             my_list.append(items.pop())
-
-
 
         if type(my_list[0]) == Printer:
             for i in my_list:
@@ -91,6 +96,17 @@ class OrgWarehouse():
     #            f'Принтеров: {len(self.take_out_dict.get("Аналитика").get("Принтеры"))} Ксероксов: {len(self.take_out_dict.get("Аналитика").get("Ксероксов"))}\n' \
     #            f'В отделе IT такая оргтехника: \nСканеров: {len(self.take_out_dict.get("IT").get("Сканеры"))} ' \
     #            f'Принтеров: {len(self.take_out_dict.get("IT").get("Принтеры"))} Ксероксов: {len(self.take_out_dict.get("IT").get("Ксероксов"))}\n'
+
+class GetInException(Exception):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
+class ForStrExc(Exception):
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+
 class OrgTechnic(ABC):
     def __init__(self, name, price, color):
         self.name = name
@@ -303,7 +319,7 @@ class GenObj():
                 list_obj.append(obj)
         return list_obj
 
-objects_p = GenObj(6, 'p')
+objects_p = GenObj(6, 'p') #есть класс GenObj
 printers = objects_p.generate_obj()
 
 objects_s = GenObj(5, 's')
@@ -317,18 +333,21 @@ warehouse1 = OrgWarehouse(30)
 print(warehouse1.get_in(scaners, 3))
 print(warehouse1.get_in(scaners, 2))
 
-print(warehouse1.get_in(printers, 5))
+try:
+    print(warehouse1.get_in(printers, '5'))
+except GetInException as err:
+    print(err)
 
 print(warehouse1.get_in(xeroxes, 3))
 
 
 print(warehouse1)
+
 print(warehouse1.take_out('Бухгалтерия', 'Сканеры', 2))
 print(warehouse1.take_out('Бухгалтерия', 'Сканеры', 1))
 print(warehouse1.take_out('Аналитика', 'Сканеры', 1))
 print(warehouse1.take_out('IT', 'Сканеры', 1))
-print(warehouse1.take_out('IT', 'Принтеры', 2))
-print(warehouse1.take_out('Бухгалтерия', 'Принтеры', 1))
+
 print(warehouse1.take_out('Аналитика', 'Ксероксы', 1))
 print(scaners)
 print(warehouse1)
@@ -344,5 +363,3 @@ printer1.print_logic(10) #аставил печатать его 10 листов
 
 xerox1 = xeroxes[0] #вытащу ксерокс
 xerox1.logic_xerox(3) #отксерю 3 листа, все работает, все круто.
-
-

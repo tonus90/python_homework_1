@@ -10,7 +10,23 @@
 # Подсказка: постарайтесь по возможности реализовать в проекте «Склад оргтехники» максимум возможностей,
 # изученных на уроках по ООП.
 
-
+"""
+С помощью программы можно генерировать разное кол-во техники трех типов: сканер, принтер, ксерокс
+и сохранять их в список эти объекты, атрибуты объектов формируются случайным образом, для каждого типа
+атрибуты отличаются, но значения атрибутов комбинируются.
+Можно передавать из списка объекты на склад в словарь, где ключ - название техники, значение -
+список объектов.
+Можно со склада забирать технику и передавать в отделы, и выводить словарь, где ключ -
+название отдела, значение - словарь, в котором ключ - название техники, значение - список объектов этого типа
+Также сделана примитивная логика реботы любого принтера, сканера, ксерокса.
+Например. Могу вызвать объект принтер1 и через метод printer_logic(10) засуну ему 10 листов на печать,
+в консоле он покажет, что их печатает. По логике: к примеру ч/б лазерный принтер печатает быстрее
+чем цветной струйный и тд. По времени работы все настроено также и для сканеров и для ксероксов.
+У принтеров есть запас чернил, который уменьшается с каждым листом, и система подачи чернил - струйная, лазер. У сканера
+есть режимы сканирования - цветной/черно-белый. У ксерокса есть атрибуты как принтеров так и сканеров.
+То есть в программе есть бизнес логика склада с конкретными результатами - словарями и логика работы оргтехники
+в зависимости от нагенеренных параметров.
+"""
 from abc import ABC, abstractmethod
 from time import sleep, time
 from random import choice
@@ -65,7 +81,7 @@ class OrgWarehouse():
         return self.get_dict
 
     def __str__(self):
-        return f'На складе вот такая орг техника:\n {self.for_str()}'
+        return f'На складе вот такая орг техника:\n {self.for_str()} и места: {self.capacity}'
 
     def take_out(self, dep, type_of, cnt):
         my_dict = {}
@@ -98,11 +114,6 @@ class OrgWarehouse():
     #            f'Принтеров: {len(self.take_out_dict.get("IT").get("Принтеры"))} Ксероксов: {len(self.take_out_dict.get("IT").get("Ксероксов"))}\n'
 
 class GetInException(Exception):
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
-
-class ForStrExc(Exception):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
@@ -319,38 +330,45 @@ class GenObj():
                 list_obj.append(obj)
         return list_obj
 
-objects_p = GenObj(6, 'p') #есть класс GenObj
-printers = objects_p.generate_obj()
+objects_p = GenObj(6, 'p') #есть класс GenObj создаем объект генератора, куда кладем инфу сколько объектов создать и
+#какого типа 'p'-принтер, 's' - сканер, 'x' - ксерокс
+printers = objects_p.generate_obj() #генерируем 6 принтеров в список, с помощью метода
 
-objects_s = GenObj(5, 's')
-scaners = objects_s.generate_obj()
-print(scaners)
+objects_s = GenObj(5, 's') #тоже самое дял сканеров
+scaners = objects_s.generate_obj() #генерируем 5 сканеров
+print(scaners) #убедились, что они создались
 
 objects_x = GenObj(4, 'x')
-xeroxes = objects_x.generate_obj()
+xeroxes = objects_x.generate_obj() #нагенерили 4 ксерокса
 
-warehouse1 = OrgWarehouse(30)
-print(warehouse1.get_in(scaners, 3))
-print(warehouse1.get_in(scaners, 2))
+warehouse1 = OrgWarehouse(30) #создали склад на 30 мест
+print(warehouse1.get_in(scaners, 3)) #добавим из имеющихся 3 сканера в словарь ключ - "Сканеры" значение -
+# лист с объектами сканер и посмотрим через принт
+print(warehouse1.get_in(scaners, 2))#добавим еще 2 сканера
 
 try:
-    print(warehouse1.get_in(printers, '5'))
+    print(warehouse1.get_in(printers, '5')) #добавим 5 принтеров, но введем вместо инт - строку, получим сообщение об
+    #ошибке, но не отвалимся
 except GetInException as err:
     print(err)
 
-print(warehouse1.get_in(xeroxes, 3))
-
-
-print(warehouse1)
-
-print(warehouse1.take_out('Бухгалтерия', 'Сканеры', 2))
-print(warehouse1.take_out('Бухгалтерия', 'Сканеры', 1))
-print(warehouse1.take_out('Аналитика', 'Сканеры', 1))
-print(warehouse1.take_out('IT', 'Сканеры', 1))
-
-print(warehouse1.take_out('Аналитика', 'Ксероксы', 1))
+print(warehouse1.get_in(xeroxes, 3)) #добавим 3 ксерокса из имеющихся
 print(scaners)
-print(warehouse1)
+print(printers)
+print(xeroxes) #убедимся, что у нас осталось меньшее кол-во орг техники, на величину, забранную на склад
+
+
+print(warehouse1) #посмотрим, что на складе, получим сообщ, что принтеров на складе нет, сканеров - 5, ксероксов - 3
+
+#зарабнная техника хранится в словаре ключ - название отдела, значение - словарь с ключами название оргтехники, значение - листы объектов
+print(warehouse1.take_out('Бухгалтерия', 'Сканеры', 2)) #заберем со склада 2 сканера и отправим их в бухгалетриюв
+print(warehouse1.take_out('Бухгалтерия', 'Сканеры', 1)) #еще 1 в бух-ю
+print(warehouse1.take_out('Аналитика', 'Сканеры', 1)) #один сканер в отдел Аналитики
+print(warehouse1.take_out('IT', 'Сканеры', 1)) #и один айтишникам, останется на складе 0 сканеров
+
+print(warehouse1.take_out('Аналитика', 'Ксероксы', 1)) #аналитикам 1 ксерокс
+print(scaners) #увидим еще раз, что сканеров - пустой лист
+print(warehouse1) #что осталось на складе после передачи отделам
 
 #Создам еще сканер, тк все отдал на скад и со склада в отделы:
 scaners_new = GenObj(1, 's') #создал 1 объект генератора
